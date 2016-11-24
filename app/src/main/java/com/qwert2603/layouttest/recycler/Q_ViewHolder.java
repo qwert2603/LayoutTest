@@ -12,8 +12,14 @@ import com.qwert2603.layouttest.R;
 
 class Q_ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
 
+    enum RemoveStyle {
+        NONE,
+        SWIPE,
+        ROTATE
+    }
+
     private ColorView mBack;
-    private ColorView mColorView;
+    ColorView mColorView;
     ImageView mHeartImageView;
     TextSwitcher mTextSwitcher;
     ImageView mHandleView;
@@ -21,6 +27,8 @@ class Q_ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperVie
     ImageView mItemHeart;
 
     private Item mItem;
+
+    private RemoveStyle mRemoveStyle;
 
     Q_ViewHolder(View itemView) {
         super(itemView);
@@ -52,7 +60,19 @@ class Q_ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperVie
         mBack.setColor(Color.WHITE);
     }
 
-    public Item getItem() {
+    Item getItem() {
         return mItem;
+    }
+
+    RemoveStyle getRemoveStyle() {
+        return mRemoveStyle;
+    }
+
+    void setRemoveStyle(RemoveStyle removeStyle) {
+        mRemoveStyle = removeStyle;
+    }
+
+    void resetAfterRotateRemoving() {
+
     }
 }

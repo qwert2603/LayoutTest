@@ -29,12 +29,12 @@ class Q_Adapter extends RecyclerView.Adapter<Q_ViewHolder> implements ItemTouchH
 
     @Override
     public Q_ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LogUtils.d("Q_ViewHolder#onCreateViewHolder");
-        @SuppressLint("InflateParams")
 
+        @SuppressLint("InflateParams")
         View view = View.inflate(parent.getContext(), R.layout.item_recycler, null);
 
         final Q_ViewHolder holder = new Q_ViewHolder(view);
+        LogUtils.d("Q_ViewHolder#onCreateViewHolder " + holder);
 
         holder.mHandleView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -63,6 +63,16 @@ class Q_Adapter extends RecyclerView.Adapter<Q_ViewHolder> implements ItemTouchH
                     mItems.get(adapterPosition).like();
                     notifyItemChanged(adapterPosition, Q_ItemHolderInfo.ACTION_LIKE_TEXT_CLICKED);
                 }
+            }
+        });
+        holder.mColorView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                int adapterPosition = holder.getAdapterPosition();
+                mItems.remove(adapterPosition);
+                holder.setRemoveStyle(Q_ViewHolder.RemoveStyle.ROTATE);
+                notifyItemRemoved(adapterPosition);
+                return true;
             }
         });
 
@@ -101,12 +111,12 @@ class Q_Adapter extends RecyclerView.Adapter<Q_ViewHolder> implements ItemTouchH
         return 1;
     }
 
-    public void addItems(Context context, boolean animated) {
+    void addItems(Context context, boolean animated) {
         mItems.clear();
 
         TypedArray typedArray = context.getResources().obtainTypedArray(R.array.recycler_colors);
 
-        for (int i = 0; i < 1305; i++) {
+        for (int i = 0; i < 1000; i++) {
             String s = "Item " + String.valueOf(((char) ('A' + i % 26))) + " " + i + " ";
             for (int j = 0; j < new Random().nextInt(8); j++) {
                 s += "WW";

@@ -20,21 +20,14 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways">
 
-                <ImageView
-                    android:id="@+id/toolbar_icon"
-                    android:layout_width="?attr/actionBarSize"
-                    android:layout_height="match_parent"
-                    android:scaleType="center"
-                    android:src="@drawable/heart_empty"/>
-
                 <TextView
                     android:id="@+id/toolbar_title"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:text="Recycler"
                     android:textColor="@color/square_anim_start"
-                    android:textSize="24sp"/>
+                    android:textSize="24dp"/>
 
             </android.support.v7.widget.Toolbar>
 

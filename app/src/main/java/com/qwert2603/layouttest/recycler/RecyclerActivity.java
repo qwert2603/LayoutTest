@@ -20,7 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.qwert2603.layouttest.LogUtils;
@@ -43,7 +42,6 @@ public class RecyclerActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private AppBarLayout mAppBarLayout;
-    private ImageView mToolbarIcon;
     private TextView mToolbarTitle;
     private MenuItem mMenuItem;
     private FloatingActionButton mFloatingActionButton;
@@ -63,11 +61,23 @@ public class RecyclerActivity extends AppCompatActivity {
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
-        mToolbarIcon = (ImageView) findViewById(R.id.toolbar_icon);
         mToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         mFloatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
 
+        mToolbarTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRecyclerView.smoothScrollToPosition(0);
+            }
+        });
         setSupportActionBar(mToolbar);
+        mToolbar.setNavigationIcon(R.drawable.heart_empty_white);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecyclerActivity.this.finish();
+            }
+        });
 
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,10 +124,7 @@ public class RecyclerActivity extends AppCompatActivity {
         /*
         * todo
         *
-        * 1. скролл на самый верх при нажании на toolbar
-        * 2. остановка анимации при swipe/drag
-        * 3. кастомная анимация удаления элемента (rotateX -> scaleY до 0)
-        * 4. иконка тулбара ч/з setIcon
+        * 1. скрытие fab при скролинге
         * */
     }
 
@@ -158,8 +165,8 @@ public class RecyclerActivity extends AppCompatActivity {
         ViewGroup.MarginLayoutParams mFABLayoutParams = (ViewGroup.MarginLayoutParams) mFloatingActionButton.getLayoutParams();
         mFloatingActionButton.setTranslationY(mFloatingActionButton.getHeight() + mFABLayoutParams.bottomMargin);
 
-        mToolbarIcon.setTranslationY(-1 * mAppBarLayout.getHeight());
-        mToolbarIcon.animate()
+        mToolbar.setTranslationY(-1 * mAppBarLayout.getHeight());
+        mToolbar.animate()
                 .translationY(0)
                 .setStartDelay(300)
                 .setDuration(ANIMATION_DURATION_TOOLBAR);

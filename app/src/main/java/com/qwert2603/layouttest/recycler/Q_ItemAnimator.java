@@ -6,7 +6,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -41,7 +40,9 @@ class Q_ItemAnimator extends DefaultItemAnimator {
         if (changeFlags == FLAG_CHANGED) {
             for (Object payload : payloads) {
                 if (payload instanceof String) {
-                    return new Q_ItemHolderInfo((String) payload);
+                    Q_ItemHolderInfo qItemHolderInfo = new Q_ItemHolderInfo((String) payload);
+                    qItemHolderInfo.setFrom(viewHolder);
+                    return qItemHolderInfo;
                 }
             }
         }
@@ -55,6 +56,7 @@ class Q_ItemAnimator extends DefaultItemAnimator {
             @NonNull RecyclerView.ViewHolder newHolder,
             @NonNull ItemHolderInfo preInfo,
             @NonNull ItemHolderInfo postInfo) {
+        LogUtils.d("animateChange " + oldHolder + " " + newHolder + " " + preInfo + " " + postInfo);
         cancelCurrentAnimationIfExist(newHolder);
 
         if (preInfo instanceof Q_ItemHolderInfo) {
@@ -66,9 +68,10 @@ class Q_ItemAnimator extends DefaultItemAnimator {
             if (Q_ItemHolderInfo.ACTION_LIKE_TEXT_CLICKED.equals(qItemHolderInfo.mActionString)) {
                 animateTextLike(holder);
             }
+            return false;
         }
 
-        return false;
+        return super.animateChange(oldHolder, newHolder, preInfo, postInfo);
     }
 
     @Override
@@ -87,8 +90,21 @@ class Q_ItemAnimator extends DefaultItemAnimator {
     }
 
     @Override
-    public boolean animateAppearance(@NonNull RecyclerView.ViewHolder viewHolder, @Nullable ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
-        return super.animateAppearance(viewHolder, preLayoutInfo, postLayoutInfo);
+    public boolean animateRemove(RecyclerView.ViewHolder holder) {
+        Q_ViewHolder qViewHolder = (Q_ViewHolder) holder;
+        if ((qViewHolder).getRemoveStyle() == Q_ViewHolder.RemoveStyle.ROTATE) {
+            (qViewHolder).setRemoveStyle(Q_ViewHolder.RemoveStyle.NONE);
+            runRemoveAnimation(qViewHolder);
+            return true;
+        }
+        if ((qViewHolder).getRemoveStyle() == Q_ViewHolder.RemoveStyle.SWIPE) {
+            (qViewHolder).setRemoveStyle(Q_ViewHolder.RemoveStyle.NONE);
+            resetItemViewStateAfterRemove(qViewHolder);
+            dispatchRemoveFinished(holder);
+            return true;
+        }
+        (qViewHolder).setRemoveStyle(Q_ViewHolder.RemoveStyle.NONE);
+        return super.animateRemove(holder);
     }
 
     @Override
@@ -109,16 +125,47 @@ class Q_ItemAnimator extends DefaultItemAnimator {
         }
     }
 
+    @Override
+    public long getRemoveDuration() {
+        return 500;
+    }
+
+    private void runRemoveAnimation(final Q_ViewHolder qViewHolder) {
+        ObjectAnimator rotationY = ObjectAnimator.ofFloat(qViewHolder.itemView, "rotationY", 90);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(qViewHolder.itemView, "scaleY", 0.5f);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(rotationY).with(scaleY);
+        animatorSet.setDuration(getRemoveDuration());
+
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                LogUtils.d("runRemoveAnimation onAnimationStart");
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                LogUtils.d("runRemoveAnimation onAnimationEnd");
+                resetItemViewStateAfterRemove(qViewHolder);
+                dispatchRemoveFinished(qViewHolder);
+            }
+        });
+
+        animatorSet.start();
+    }
+
     private void runEnterAnimation(final Q_ViewHolder qViewHolder) {
         LogUtils.d("runEnterAnimation " + qViewHolder);
         int heightPixels = qViewHolder.itemView.getResources().getDisplayMetrics().heightPixels;
         qViewHolder.itemView.setTranslationY(heightPixels);
+        qViewHolder.itemView.setRotationX(-60);
         qViewHolder.itemView.animate()
                 .translationY(0)
                 .setInterpolator(new DecelerateInterpolator(3.0f))
-                //.rotationXBy(360)
+                .rotationX(0)
                 .setDuration(1000)
-                //.setStartDelay(qViewHolder.getAdapterPosition() * 100)
+                .setStartDelay(qViewHolder.getAdapterPosition() * 100)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationStart(Animator animation) {
@@ -129,6 +176,13 @@ class Q_ItemAnimator extends DefaultItemAnimator {
                     public void onAnimationEnd(Animator animation) {
                         LogUtils.d("runEnterAnimation onAnimationEnd " + qViewHolder);
                         dispatchAddFinished(qViewHolder);
+                        qViewHolder.itemView.animate().setStartDelay(0);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        qViewHolder.itemView.setTranslationY(0);
+                        qViewHolder.itemView.setRotationX(0);
                     }
                 });
     }
@@ -169,15 +223,25 @@ class Q_ItemAnimator extends DefaultItemAnimator {
             public void onAnimationStart(Animator animation) {
                 heartImageView.setImageResource(R.drawable.heart_full);
             }
+        });
 
+        animator.play(scaleX).with(scaleY).after(rotation);
+
+        animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 mHeartButtonAnimations.remove(qViewHolder);
                 dispatchChangeFinishedIfAllAnimationsEnded(qViewHolder);
             }
-        });
 
-        animator.play(scaleX).with(scaleY).after(rotation);
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                heartImageView.setRotation(0);
+                heartImageView.setScaleX(1);
+                heartImageView.setScaleY(1);
+                heartImageView.setImageResource(R.drawable.heart_full);
+            }
+        });
 
         mHeartButtonAnimations.put(qViewHolder, animator);
         animator.start();
@@ -189,7 +253,7 @@ class Q_ItemAnimator extends DefaultItemAnimator {
     }
 
     private void animateTextLike(final Q_ViewHolder qViewHolder) {
-        ImageView itemHeart = qViewHolder.mItemHeart;
+        final ImageView itemHeart = qViewHolder.mItemHeart;
         CircleColorView itemHeartBack = qViewHolder.mItemHeartBack;
 
         itemHeart.setVisibility(View.VISIBLE);
@@ -205,14 +269,9 @@ class Q_ItemAnimator extends DefaultItemAnimator {
         animatorSet.play(itemHeartAnimator).with(itemHeartBackAnimator);
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-            }
-
-            @Override
             public void onAnimationEnd(Animator animation) {
                 mHeartItemAnimations.remove(qViewHolder);
-                resetAnimationState(qViewHolder);
+                resetAnimationTextState(qViewHolder);
                 dispatchChangeFinishedIfAllAnimationsEnded(qViewHolder);
             }
         });
@@ -229,8 +288,14 @@ class Q_ItemAnimator extends DefaultItemAnimator {
         dispatchAnimationFinished(viewHolder);
     }
 
-    private void resetAnimationState(Q_ViewHolder qViewHolder) {
+    private void resetAnimationTextState(Q_ViewHolder qViewHolder) {
         qViewHolder.mItemHeart.setVisibility(View.GONE);
         qViewHolder.mItemHeartBack.setVisibility(View.GONE);
+    }
+
+    private void resetItemViewStateAfterRemove(Q_ViewHolder qViewHolder) {
+        qViewHolder.itemView.setRotationY(0);
+        qViewHolder.itemView.setScaleY(1);
+        qViewHolder.itemView.setAlpha(1);
     }
 }
