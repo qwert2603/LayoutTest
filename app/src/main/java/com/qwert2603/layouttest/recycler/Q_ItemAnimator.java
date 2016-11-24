@@ -5,6 +5,8 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
@@ -24,10 +26,14 @@ import java.util.Map;
 
 class Q_ItemAnimator extends DefaultItemAnimator {
 
+    private static final int REMOVE_ROTATE_DURATION = 600;
+
     private final Map<RecyclerView.ViewHolder, Animator> mHeartButtonAnimations = new HashMap<>();
     private final Map<RecyclerView.ViewHolder, Animator> mHeartItemAnimations = new HashMap<>();
 
-    private int mLastAddAnimatedItem = -20;
+    private int mLastAddAnimatedItem = -15;
+
+    private boolean mRotateRemoveAnimation = false;
 
     @Override
     public boolean canReuseUpdatedViewHolder(@NonNull RecyclerView.ViewHolder viewHolder) {
@@ -95,16 +101,32 @@ class Q_ItemAnimator extends DefaultItemAnimator {
         if ((qViewHolder).getRemoveStyle() == Q_ViewHolder.RemoveStyle.ROTATE) {
             (qViewHolder).setRemoveStyle(Q_ViewHolder.RemoveStyle.NONE);
             runRemoveAnimation(qViewHolder);
+            mRotateRemoveAnimation = true;
             return true;
         }
         if ((qViewHolder).getRemoveStyle() == Q_ViewHolder.RemoveStyle.SWIPE) {
             (qViewHolder).setRemoveStyle(Q_ViewHolder.RemoveStyle.NONE);
             resetItemViewStateAfterRemove(qViewHolder);
             dispatchRemoveFinished(holder);
-            return true;
+            return false;
         }
         (qViewHolder).setRemoveStyle(Q_ViewHolder.RemoveStyle.NONE);
         return super.animateRemove(holder);
+    }
+
+    @Override
+    public void runPendingAnimations() {
+        if (mRotateRemoveAnimation) {
+            mRotateRemoveAnimation = false;
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Q_ItemAnimator.super.runPendingAnimations();
+                }
+            }, REMOVE_ROTATE_DURATION);
+        } else {
+            super.runPendingAnimations();
+        }
     }
 
     @Override
@@ -125,18 +147,14 @@ class Q_ItemAnimator extends DefaultItemAnimator {
         }
     }
 
-    @Override
-    public long getRemoveDuration() {
-        return 500;
-    }
-
     private void runRemoveAnimation(final Q_ViewHolder qViewHolder) {
         ObjectAnimator rotationY = ObjectAnimator.ofFloat(qViewHolder.itemView, "rotationY", 90);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(qViewHolder.itemView, "scaleY", 0.5f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(qViewHolder.itemView, "scaleX", 0.3f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(qViewHolder.itemView, "scaleY", 0.3f);
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(rotationY).with(scaleY);
-        animatorSet.setDuration(getRemoveDuration());
+        animatorSet.play(rotationY).with(scaleX).with(scaleY);
+        animatorSet.setDuration(REMOVE_ROTATE_DURATION);
 
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -149,6 +167,12 @@ class Q_ItemAnimator extends DefaultItemAnimator {
                 LogUtils.d("runRemoveAnimation onAnimationEnd");
                 resetItemViewStateAfterRemove(qViewHolder);
                 dispatchRemoveFinished(qViewHolder);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                LogUtils.d("runRemoveAnimation onAnimationCancel");
+                mRotateRemoveAnimation = false;
             }
         });
 
@@ -165,7 +189,7 @@ class Q_ItemAnimator extends DefaultItemAnimator {
                 .setInterpolator(new DecelerateInterpolator(3.0f))
                 .rotationX(0)
                 .setDuration(1000)
-                .setStartDelay(qViewHolder.getAdapterPosition() * 100)
+                .setStartDelay(qViewHolder.getLayoutPosition() * 80)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationStart(Animator animation) {
@@ -295,6 +319,7 @@ class Q_ItemAnimator extends DefaultItemAnimator {
 
     private void resetItemViewStateAfterRemove(Q_ViewHolder qViewHolder) {
         qViewHolder.itemView.setRotationY(0);
+        qViewHolder.itemView.setScaleX(1);
         qViewHolder.itemView.setScaleY(1);
         qViewHolder.itemView.setAlpha(1);
     }

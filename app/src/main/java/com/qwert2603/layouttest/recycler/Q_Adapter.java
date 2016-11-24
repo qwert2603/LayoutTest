@@ -49,7 +49,7 @@ class Q_Adapter extends RecyclerView.Adapter<Q_ViewHolder> implements ItemTouchH
             @Override
             public void onClick(View v) {
                 int adapterPosition = holder.getAdapterPosition();
-                if (!mItems.get(adapterPosition).isLiked()) {
+                if (adapterPosition != RecyclerView.NO_POSITION && !mItems.get(adapterPosition).isLiked()) {
                     mItems.get(adapterPosition).like();
                     notifyItemChanged(adapterPosition, Q_ItemHolderInfo.ACTION_LIKE_BUTTON_CLICKED);
                 }
@@ -59,7 +59,7 @@ class Q_Adapter extends RecyclerView.Adapter<Q_ViewHolder> implements ItemTouchH
             @Override
             public void onClick(View v) {
                 int adapterPosition = holder.getAdapterPosition();
-                if (!mItems.get(adapterPosition).isLiked()) {
+                if (adapterPosition != RecyclerView.NO_POSITION && !mItems.get(adapterPosition).isLiked()) {
                     mItems.get(adapterPosition).like();
                     notifyItemChanged(adapterPosition, Q_ItemHolderInfo.ACTION_LIKE_TEXT_CLICKED);
                 }
@@ -69,9 +69,11 @@ class Q_Adapter extends RecyclerView.Adapter<Q_ViewHolder> implements ItemTouchH
             @Override
             public boolean onLongClick(View v) {
                 int adapterPosition = holder.getAdapterPosition();
-                mItems.remove(adapterPosition);
-                holder.setRemoveStyle(Q_ViewHolder.RemoveStyle.ROTATE);
-                notifyItemRemoved(adapterPosition);
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    mItems.remove(adapterPosition);
+                    holder.setRemoveStyle(Q_ViewHolder.RemoveStyle.ROTATE);
+                    notifyItemRemoved(adapterPosition);
+                }
                 return true;
             }
         });
