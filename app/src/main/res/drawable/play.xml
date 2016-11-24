@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="240dp"
+    android:height="240dp"
+    android:viewportHeight="24"
+    android:viewportWidth="24">
+
+    <path
+        android:name="play"
+        android:fillColor="@color/play"
+        android:pathData="M0 0L0 24L12 18L12 6M12 6L12 18L24 12L24 12"
+        android:strokeAlpha="0"
+        android:strokeColor="@color/colorAccent"
+        android:strokeWidth="0.4" />
+
+    <!--<path-->
+    <!--android:name="pause"-->
+    <!--android:fillColor="@color/pause"-->
+    <!--android:strokeColor="@color/colorPrimary"-->
+    <!--android:strokeWidth="0.4"-->
+    <!--android:strokeAlpha="0"-->
+    <!--android:pathData="@string/pause" />-->
+
+
+</vector>

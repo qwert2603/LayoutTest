@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <objectAnimator
+        android:duration="@integer/play_anim_duration"
+        android:propertyName="pathData"
+        android:repeatCount="0"
+        android:repeatMode="restart"
+        android:valueFrom="@string/pause"
+        android:valueTo="@string/play"
+        android:valueType="pathType" />
+
+    <objectAnimator
+        android:duration="@integer/play_anim_duration"
+        android:propertyName="fillColor"
+        android:repeatCount="0"
+        android:repeatMode="restart"
+        android:valueFrom="@color/pause"
+        android:valueTo="@color/play"
+        android:valueType="colorType"
+        android:interpolator="@android:interpolator/decelerate_quint"/>
+
+</set>

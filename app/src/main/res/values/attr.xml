@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ScaleView">
+        <attr name="start_scale" format="float"/>
+        <attr name="skew_x" format="float"/>
+        <attr name="skew_y" format="float"/>
+    </declare-styleable>
+
+    <declare-styleable name="LineLayout">
+        <attr name="layout_offset" format="dimension"/>
+        <attr name="title" format="string"/>
+        <attr name="title_text_size" format="dimension"/>
+        <attr name="title_text_color" format="color"/>
+        <attr name="title_margin_bottom" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="ColorView">
+        <attr name="color" format="color"/>
+    </declare-styleable>
+</resources>

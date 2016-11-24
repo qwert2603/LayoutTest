@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.qwert2603.layouttest.MainActivity"
+    android:orientation="vertical">
+
+    <com.qwert2603.layouttest.ScaleView
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        app:start_scale="0.8"
+        app:skew_x="0"
+        app:skew_y="0"/>
+
+</LinearLayout>

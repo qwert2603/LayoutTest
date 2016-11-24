@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF51B5</color>
+    <color name="colorPrimaryDark">#F03F9F</color>
+    <color name="colorAccent">#3F4081</color>
+
+    <color name="square_anim_start">#0F0</color>
+    <color name="square_anim_end">#F80</color>
+</resources>

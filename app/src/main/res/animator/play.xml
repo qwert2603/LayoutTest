@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <objectAnimator
+        android:duration="@integer/play_anim_duration"
+        android:propertyName="pathData"
+        android:repeatCount="0"
+        android:repeatMode="restart"
+        android:valueFrom="@string/play"
+        android:valueTo="@string/pause"
+        android:valueType="pathType"
+        android:interpolator="@android:interpolator/bounce"/>
+
+    <objectAnimator
+        android:duration="@integer/play_anim_duration"
+        android:propertyName="fillColor"
+        android:repeatCount="0"
+        android:repeatMode="restart"
+        android:valueFrom="@color/play"
+        android:valueTo="@color/pause"
+        android:valueType="colorType"
+        android:interpolator="@android:interpolator/decelerate_quint"/>
+
+</set>
