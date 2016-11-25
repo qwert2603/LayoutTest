@@ -27,7 +27,7 @@
                     android:gravity="center_vertical"
                     android:text="Recycler"
                     android:textColor="@color/square_anim_start"
-                    android:textSize="24dp"/>
+                    android:textSize="22sp"/>
 
             </android.support.v7.widget.Toolbar>
 

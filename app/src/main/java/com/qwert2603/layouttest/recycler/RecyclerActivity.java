@@ -155,6 +155,7 @@ public class RecyclerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.draw_borders) {
             mQItemDecorator.setDrawBorders(!mQItemDecorator.isDrawBorders());
+            mRecyclerView.invalidate();
             return true;
         }
         return super.onOptionsItemSelected(item);

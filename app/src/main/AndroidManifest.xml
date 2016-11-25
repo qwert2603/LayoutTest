@@ -23,7 +23,7 @@
         <activity android:name=".SunsetActivity"/>
 
         <activity android:name=".recycler.RecyclerActivity"
-            android:theme="@style/AppThemeNoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
