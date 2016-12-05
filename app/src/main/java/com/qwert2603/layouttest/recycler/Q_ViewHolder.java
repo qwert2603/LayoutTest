@@ -71,8 +71,4 @@ class Q_ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperVie
     void setRemoveStyle(RemoveStyle removeStyle) {
         mRemoveStyle = removeStyle;
     }
-
-    void resetAfterRotateRemoving() {
-
-    }
 }

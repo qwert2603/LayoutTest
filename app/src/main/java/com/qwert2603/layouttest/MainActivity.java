@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.to_recycler) {
             startActivity(new Intent(this, RecyclerActivity.class));
             return true;
+        } else if (item.getItemId() == R.id.to_seek_anim) {
+            startActivity(new Intent(this, SeekAnimActivity.class));
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
@@ -68,6 +69,11 @@ public class RecyclerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mRecyclerView.smoothScrollToPosition(0);
+                mFloatingActionButton.animate()
+                        .setStartDelay(0)
+                        .setDuration(400)
+                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .translationY(0);
             }
         });
         setSupportActionBar(mToolbar);

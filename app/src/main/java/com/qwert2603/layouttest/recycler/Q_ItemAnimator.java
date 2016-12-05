@@ -183,7 +183,7 @@ class Q_ItemAnimator extends DefaultItemAnimator {
         LogUtils.d("runEnterAnimation " + qViewHolder);
         int heightPixels = qViewHolder.itemView.getResources().getDisplayMetrics().heightPixels;
         qViewHolder.itemView.setTranslationY(heightPixels);
-        qViewHolder.itemView.setRotationX(-30);
+        //qViewHolder.itemView.setRotationX(-30);
         qViewHolder.itemView.animate()
                 .translationY(0)
                 .setInterpolator(new DecelerateInterpolator(3.0f))

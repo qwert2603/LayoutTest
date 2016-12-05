@@ -17,4 +17,5 @@
     <declare-styleable name="ColorView">
         <attr name="color" format="color"/>
     </declare-styleable>
+    
 </resources>

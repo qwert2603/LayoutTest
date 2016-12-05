@@ -24,6 +24,8 @@
 
         <activity android:name=".recycler.RecyclerActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".SeekAnimActivity"/>
     </application>
 
 </manifest>

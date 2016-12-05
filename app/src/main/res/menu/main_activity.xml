@@ -28,4 +28,9 @@
         android:title="To Recycler"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/to_seek_anim"
+        android:title="To Seek Anim"
+        app:showAsAction="never"/>
+
 </menu>

@@ -47,6 +47,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/fab_icon"
-        app:elevation="6dp"/>
+        app:elevation="6dp"
+        app:layout_behavior="com.qwert2603.layouttest.recycler.FabHideBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>
