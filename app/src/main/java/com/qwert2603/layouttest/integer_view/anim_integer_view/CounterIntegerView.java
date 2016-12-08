@@ -3,6 +3,8 @@ package com.qwert2603.layouttest.integer_view.anim_integer_view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -14,6 +16,9 @@ import com.qwert2603.layouttest.R;
 import com.qwert2603.layouttest.integer_view.IntegerView;
 
 public class CounterIntegerView extends LinearLayout implements IntegerView {
+
+    private static final String DIGIT_KEY = "com.qwert2603.layouttest.DIGIT_KEY";
+    private static final String SUPER_STATE_KEY = "com.qwert2603.layouttest.SUPER_STATE_KEY";
 
     private int mInteger;
 
@@ -44,9 +49,7 @@ public class CounterIntegerView extends LinearLayout implements IntegerView {
         mOutTextView.setTextColor(textColor);
         mOutTextView.setTextSize(textSize);
 
-        mStableTextView.setText(String.valueOf(mInteger));
-        mInTextView.setText("");
-        mOutTextView.setText("");
+        setIntegerWithoutAnimation(mInteger);
     }
 
     @Override
@@ -80,6 +83,24 @@ public class CounterIntegerView extends LinearLayout implements IntegerView {
         do_switch(oldNumber, mInteger, b.substring(s, b.length()), e.substring(s, e.length()));
     }
 
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SUPER_STATE_KEY, super.onSaveInstanceState());
+        bundle.putInt(DIGIT_KEY, getInteger());
+        return bundle;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state instanceof Bundle) {
+            Bundle bundle = (Bundle) state;
+            setIntegerWithoutAnimation(bundle.getInt(DIGIT_KEY));
+            state = bundle.getParcelable(SUPER_STATE_KEY);
+        }
+        super.onRestoreInstanceState(state);
+    }
+
     private void do_switch(int bi, int ei, String b, String e) {
         mInTextView.setText(e);
         mOutTextView.setText(b);
@@ -96,5 +117,12 @@ public class CounterIntegerView extends LinearLayout implements IntegerView {
             mOutTextView.animate().translationY(getHeight());
         }
 
+    }
+
+    private void setIntegerWithoutAnimation(int integer) {
+        mInteger = integer;
+        mStableTextView.setText(String.valueOf(mInteger));
+        mInTextView.setText("");
+        mOutTextView.setText("");
     }
 }

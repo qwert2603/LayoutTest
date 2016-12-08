@@ -2,6 +2,8 @@ package com.qwert2603.layouttest.integer_view.vector_integer_view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -12,7 +14,13 @@ import android.widget.ViewAnimator;
 import com.qwert2603.layouttest.R;
 import com.qwert2603.layouttest.integer_view.IntegerView;
 
+/**
+ * Integer drawables are taken from https://github.com/alexjlockwood/adp-delightful-details
+ */
 public class VectorIntegerView extends ViewAnimator implements IntegerView {
+
+    private static final String DIGIT_KEY = "com.qwert2603.layouttest.DIGIT_KEY";
+    private static final String SUPER_STATE_KEY = "com.qwert2603.layouttest.SUPER_STATE_KEY";
 
     private DigitAdapter mDigitAdapter;
 
@@ -43,4 +51,21 @@ public class VectorIntegerView extends ViewAnimator implements IntegerView {
         return mDigitAdapter.getInteger();
     }
 
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SUPER_STATE_KEY, super.onSaveInstanceState());
+        bundle.putInt(DIGIT_KEY, getInteger());
+        return bundle;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state instanceof Bundle) {
+            Bundle bundle = (Bundle) state;
+            setInteger(bundle.getInt(DIGIT_KEY));
+            state = bundle.getParcelable(SUPER_STATE_KEY);
+        }
+        super.onRestoreInstanceState(state);
+    }
 }
