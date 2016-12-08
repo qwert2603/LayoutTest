@@ -591,5 +591,4 @@
         android:fromId="@id/minus"
         android:toId="@id/nth"/>
 
-
 </animated-selector>

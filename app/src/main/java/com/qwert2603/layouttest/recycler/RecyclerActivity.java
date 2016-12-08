@@ -126,12 +126,6 @@ public class RecyclerActivity extends AppCompatActivity {
             mQAdapter.addItems(RecyclerActivity.this, false);
         }
         LogUtils.d("onCreate e");
-
-        /*
-        * todo
-        *
-        * 1. скрытие fab при скролинге
-        * */
     }
 
     @Override

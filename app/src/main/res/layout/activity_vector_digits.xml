@@ -9,12 +9,22 @@
     android:orientation="vertical"
     tools:context="com.qwert2603.layouttest.VectorDigitsActivity">
 
-    <com.qwert2603.layouttest.vector_digit_view.VectorDigitView
+    <com.qwert2603.layouttest.integer_view.anim_integer_view.CounterIntegerView
+        android:id="@+id/anim_integer_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:gravity="end"
+        android:textColor="@color/sunset_sky"
+        android:textSize="36sp"
+        app:counter_integer="26"/>
+
+    <com.qwert2603.layouttest.integer_view.vector_integer_view.VectorIntegerView
         android:id="@+id/vector_digit_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:digit="42"/>
+        app:vector_integer="42"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +62,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/digit"
+                android:id="@+id/integer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberSigned"

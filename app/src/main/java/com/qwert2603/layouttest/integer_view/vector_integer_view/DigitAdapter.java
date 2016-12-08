@@ -1,4 +1,4 @@
-package com.qwert2603.layouttest.vector_digit_view;
+package com.qwert2603.layouttest.integer_view.vector_integer_view;
 
 import android.annotation.SuppressLint;
 import android.support.v7.util.DiffUtil;
@@ -12,7 +12,7 @@ import com.qwert2603.layouttest.R;
 
 class DigitAdapter extends RecyclerView.Adapter<DigitAdapter.DigitViewHolder> {
 
-    private int mDigit;
+    private int mInteger;
 
     @SuppressLint("InflateParams")
     @Override
@@ -22,21 +22,21 @@ class DigitAdapter extends RecyclerView.Adapter<DigitAdapter.DigitViewHolder> {
 
     @Override
     public void onBindViewHolder(DigitAdapter.DigitViewHolder holder, int position) {
-        holder.setDigit(getDigitAt(mDigit, position));
+        holder.setDigit(getDigitAt(mInteger, position));
     }
 
     @Override
     public int getItemCount() {
-        return getDigitCount(mDigit);
+        return getDigitCount(mInteger);
     }
 
-    int getDigit() {
-        return mDigit;
+    int getInteger() {
+        return mInteger;
     }
 
-    void setDigit(final int digit) {
-        final int old = mDigit;
-        mDigit = digit;
+    void setInteger(final int integer) {
+        final int old = mInteger;
+        mInteger = integer;
         DiffUtil.calculateDiff(new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {
@@ -45,7 +45,7 @@ class DigitAdapter extends RecyclerView.Adapter<DigitAdapter.DigitViewHolder> {
 
             @Override
             public int getNewListSize() {
-                return getDigitCount(digit);
+                return getDigitCount(integer);
             }
 
             @Override
@@ -55,7 +55,7 @@ class DigitAdapter extends RecyclerView.Adapter<DigitAdapter.DigitViewHolder> {
 
             @Override
             public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                return getDigitAt(old, oldItemPosition) == getDigitAt(digit, newItemPosition);
+                return getDigitAt(old, oldItemPosition) == getDigitAt(integer, newItemPosition);
             }
         }, false).dispatchUpdatesTo(this);
     }

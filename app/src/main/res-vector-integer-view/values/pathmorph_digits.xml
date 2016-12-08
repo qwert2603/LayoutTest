@@ -1,24 +1,5 @@
 <resources>
 
-    <declare-styleable name="VectorDigitView">
-        <attr name="digit" format="integer"/>
-    </declare-styleable>
-
-    <declare-styleable name="DigitState">
-        <attr name="state_zero" format="boolean"/>
-        <attr name="state_one" format="boolean"/>
-        <attr name="state_two" format="boolean"/>
-        <attr name="state_three" format="boolean"/>
-        <attr name="state_four" format="boolean"/>
-        <attr name="state_five" format="boolean"/>
-        <attr name="state_six" format="boolean"/>
-        <attr name="state_seven" format="boolean"/>
-        <attr name="state_eight" format="boolean"/>
-        <attr name="state_nine" format="boolean"/>
-        <attr name="state_nth" format="boolean"/>
-        <attr name="state_minus" format="boolean"/>
-    </declare-styleable>
-
   <string name="path_zero">
     M 0.24585635359116,  0.552486187845304
     C 0.24585635359116,  0.331491712707182  0.370165745856354, 0.0994475138121547 0.552486187845304, 0.0994475138121547
@@ -103,11 +84,5 @@
     C 0.5, 0.5 0.5, 0.5 0.86, 0.5
     C 0.5, 0.5  0.5, 0.5   0.26, 0.5
   </string>
-
-    <dimen name="digit_size">36dp</dimen>
-    <item name="digit_translateX" format="float" type="dimen">-0.06</item>
-    <item name="digit_translateY" format="float" type="dimen">-0.06</item>
-    <item name="digit_strokewidth" format="float" type="dimen">0.042</item>
-    <color name="digit_color">#F00</color>
 
 </resources>

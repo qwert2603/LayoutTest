@@ -4,4 +4,6 @@
     android:id="@+id/img"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/digit_density"
+    android:layout_marginEnd="@dimen/digit_density"
     android:src="@drawable/asl_pathmorph_digits"/>

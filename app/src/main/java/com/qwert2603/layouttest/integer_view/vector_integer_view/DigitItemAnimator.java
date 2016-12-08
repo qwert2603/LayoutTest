@@ -1,5 +1,6 @@
-package com.qwert2603.layouttest.vector_digit_view;
+package com.qwert2603.layouttest.integer_view.vector_integer_view;
 
+import android.animation.Animator;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
