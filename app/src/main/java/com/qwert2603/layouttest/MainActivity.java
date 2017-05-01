@@ -34,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
             View newView;
             if (mRootView.getChildAt(0) instanceof CustomView) {
                 newView = new ScaleView(this);
+            } else if (mRootView.getChildAt(0) instanceof ScaleView) {
+                newView = new PathView(this);
+            } else if (mRootView.getChildAt(0) instanceof PathView) {
+                newView = new PicsView(this);
             } else {
                 newView = new CustomView(this);
             }
