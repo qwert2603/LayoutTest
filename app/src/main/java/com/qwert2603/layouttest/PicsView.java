@@ -28,6 +28,8 @@ public class PicsView extends View {
         path.quadTo(600, 0, 600, 600);
         path.cubicTo(300, 300, 0, 600, 0, 0);
         canvas.drawPath(path, paint);
+
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
     public PicsView(Context context, @Nullable AttributeSet attrs) {
@@ -45,8 +47,6 @@ public class PicsView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         klimt1918.setBounds(100, 100, 700, 700);
         klimt1918.draw(canvas);
